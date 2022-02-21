@@ -72,18 +72,18 @@ const mainController = {
         const movies = mainController.formatedMovies(data);
         return movies;
     },
-
-    async findAllMoviesByGenreId (id) {
-        // On surcharge les paramètres de recherche par défaut :
-        mainController.moviesQueriesParams.include[2].where = { id : id };
+    
+    async findAllMoviesByCountryId (id) {
+        // On surcharge les paramètres de recherche par défaut, ici l'index 1 correspond à l'objet relatif à country
+        mainController.moviesQueriesParams.include[1].where = { id : id };
         const data = await Movie.findAll(mainController.moviesQueriesParams);
         const movies = mainController.formatedMovies(data);
         return movies;
     },
 
-    async findAllMoviesByCountryId (id) {
-        // On surcharge les paramètres de recherche par défaut :
-        mainController.moviesQueriesParams.include[1].where = { id : id };
+    async findAllMoviesByGenreId (id) {
+        // On surcharge les paramètres de recherche par défaut, ici l'index 2 correspond à l'objet relatif à genre
+        mainController.moviesQueriesParams.include[2].where = { id : id }; 
         const data = await Movie.findAll(mainController.moviesQueriesParams);
         const movies = mainController.formatedMovies(data);
         return movies;
