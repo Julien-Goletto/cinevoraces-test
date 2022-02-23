@@ -79,7 +79,7 @@ INSERT INTO "movie_from_country" ("id", "movie_id", "country_id")VALUES
 (1, 1, 1),
 (2, 2, 2),
 (3, 3, 3),
-(4, 4, 4);
+(4, 4, 6);
 
 INSERT INTO "review" ("id", "bookmarked", "liked", "note", "comment", "movie_id", "user_id") VALUES
 (1, false, true, 9, 'Ce film est génial.', 1, 1),

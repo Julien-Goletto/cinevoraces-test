@@ -19,6 +19,9 @@ Movie.init(
                 notEmpty : true,
             }
         },
+        movie_poster : {
+            type : DataTypes.TEXT,
+        },
         directors : {
             type : DataTypes.ARRAY(Sequelize.TEXT),
             validate :{
