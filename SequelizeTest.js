@@ -1,28 +1,24 @@
 require('dotenv').config();
 const movieController = require('./app/controllers/movieController');
+const reviewController = require('./app/controllers/reviewController');
 
 /**
  * Tests unitaires des méthodes dépendantes de sequelize
  */
 const test = async function () {
 
-    //Test 1
-    // const movies = await movieController.findAllMovies();
+    // 1 - Tests de movieController----------------------------------------------------------------------------------------
+    const data = await movieController.findAllMovies();
+    // const data = await movieController.findMovieById(1);
+    // const data = await mainController.findAllMoviesBySeasonId(1);
+    // const data = await movieController.findAllMoviesByCountryId(2);
+    // const data = await movieController.findAllMoviesByGenreId(2);
 
-    //Test 2
-    // const movies = await movieController.findMovieById(1);
-
-    //Test 3
-    // const movies = await mainController.findAllMoviesBySeasonId(1);
-
-    //Test 4
-    // const movies = await movieController.findAllMoviesByCountryId(2);
-
-    //Test 5
-    const movies = await movieController.findAllMoviesByGenreId(2);
+    // 2 - Tests de reviewController----------------------------------------------------------------------------------------
+    // const data = await reviewController.findAllReviews();
 
     //Affichage des données
-    console.log(movies);
+    console.log(data);
 }
 
 test();

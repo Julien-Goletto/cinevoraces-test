@@ -83,9 +83,12 @@ INSERT INTO "movie_from_country" ("id", "movie_id", "country_id")VALUES
 
 INSERT INTO "review" ("id", "bookmarked", "liked", "note", "comment", "movie_id", "user_id") VALUES
 (1, false, true, 9, 'Ce film est génial.', 1, 1),
-(2, false, false, 6, 'Franchement pas ouf ce film, je me suis carrément ennuyé...', 2, 3);
+(2, false, false, 6, 'Trop vieux pour moi, ça bouge pas assez, je préfère du Marvel tiens', 1, 3),
+(3, false, false, 4, 'Franchement pas ouf ce film, je me suis carrément ennuyé...', 2, 3);
+
 INSERT INTO "review" ("id", "bookmarked", "liked", "movie_id", "user_id") VALUES
-(3, true, false, 2, 2);
+(4, true, false, 1, 2),
+(5, true, false, 2, 2);
 
 ALTER TABLE "movie_is_genre"
     ADD FOREIGN KEY ("movie_id") REFERENCES "movie"("id");

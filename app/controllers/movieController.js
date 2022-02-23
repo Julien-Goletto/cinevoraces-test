@@ -1,4 +1,6 @@
+const { aggregate, sum } = require('../models/country');
 const {Country, Genre, Movie, Review, Season, User} = require('../models/tableIndex');
+const sequelize = require('../sequelize');
 
 const movieController = {
     //Définition des paramètres par défaut de query pour retour data standardisé
@@ -9,8 +11,9 @@ const movieController = {
      * @param {'relations'} - Sequelize relations between tables, defined in tableIndex
      * @returns { params } - parameters for sequelize methods
      */
+
     moviesQueriesParams : {
-        attributes : ['french_title','directors','release_year','length'],
+        attributes : ['id','french_title','movie_poster','directors','release_year','length'],
         include : [
             {
                 model : User,
@@ -27,7 +30,13 @@ const movieController = {
                 as : 'movieGenres',
                 attributes : ['name']
             },
-        ]
+
+            {
+                model : Review,
+                as : 'associatedReviews',
+                attributes : ['bookmarked','liked','note'],
+            },
+        ],
     },
 
     /**
@@ -43,14 +52,33 @@ const movieController = {
             const keys = Object.keys(movieData);
             let movieToPush = {};
             for (let key of keys){
+                //Specific datas from relations
                 if(key === 'recommendedByUser'){
                     movieToPush[key] = movieData[key].dataValues.pseudo;
-                }else if (key === 'producedByCountries' || key === 'movieGenres'){
+                    // nested datas into lower levels of Movie Object
+                } else if (key === 'producedByCountries' || key === 'movieGenres'){
                     movieToPush[key] = [];
                     for (info of movieData[key]){
                         movieToPush[key].push(info.dataValues.name);
                     }
-                }
+                    // more specific datas to be processed
+                } else if (key === 'associatedReviews'){
+                    let notes = [];
+                    let bookmarkCount = 0;
+                    let likeCount = 0;
+                    for (const review of movieData[key]){
+                        if (review.dataValues.note){notes.push(review.dataValues.note)};
+                        if (review.dataValues.bookmarked){bookmarkCount++};
+                        if (review.dataValues.liked){likeCount++};
+                    }
+                    let averageNote;
+                    (notes.length === 0)? averageNote = '':averageNote = notes.reduce((sum, value) => sum + value)/(notes.length);
+                    movieToPush[key] = {
+                        averageNote,
+                        bookmarkCount,
+                        likeCount,
+                    }
+                } 
                 else{
                     movieToPush[key] = movieData[key];
                 }
@@ -66,7 +94,7 @@ const movieController = {
      * @returns {movies} - Array with all Movie objects from db
      */
     async findAllMovies () {
-        const data = await Movie.findAll(mainController.moviesQueriesParams);
+        const data = await Movie.findAll(movieController.moviesQueriesParams);
         const movies = movieController.formatedMovies(data);
         return movies;
     },
@@ -77,7 +105,6 @@ const movieController = {
      * @returns { movie } - Array that contains the single movie picked. /!\ Important to use formatedMovie method !!
      */
     async findMovieById (id) {
-        console.log (id);
         let data = await Movie.findByPk(id, movieController.moviesQueriesParams);
         data = [data];
         const movie = movieController.formatedMovies(data)[0];
