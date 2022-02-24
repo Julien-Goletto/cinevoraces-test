@@ -8,8 +8,8 @@ const reviewController = require('./app/controllers/reviewController');
 const test = async function () {
 
     // 1 - Tests de movieController----------------------------------------------------------------------------------------
-    const data = await movieController.findAllMovies();
-    // const data = await movieController.findMovieById(1);
+    // const data = await movieController.findAllMovies();
+    const data = await movieController.findMovieById(1);
     // const data = await mainController.findAllMoviesBySeasonId(1);
     // const data = await movieController.findAllMoviesByCountryId(2);
     // const data = await movieController.findAllMoviesByGenreId(2);
